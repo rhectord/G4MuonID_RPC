@@ -42,39 +42,40 @@
 #include "Physics.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-int main(int argc,char** argv) {
-
-   G4RunManager *runManager = new G4RunManager();
-   
-   runManager->SetUserInitialization(new DetectorConstruction());
-   runManager->SetUserInitialization(new PhysicsList());
-   runManager->SetUserInitialization(new ActionInitialization());
-   
-   runManager->Initialize();
+int main(int argc,char** argv){
+	G4RunManager *runManager = new G4RunManager();
 	
-   G4UIExecutive *ui = new G4UIExecutive(argc, argv);
+	runManager->SetUserInitialization(new DetectorConstruction());
+	runManager->SetUserInitialization(new PhysicsList());
+	runManager->SetUserInitialization(new ActionInitialization());
 	
-   G4VisManager *visManager = new G4VisExecutive();
-   visManager->Initialize();
-   
-   G4UImanager *UImanager = G4UImanager::GetUIpointer();
-   
-   /*UImanager->ApplyCommand("/vis/open OGL");
-   UImanager->ApplyCommand("/vis/scene/add/trajectories smooth");
-   UImanager->ApplyCommand("/vis/viewer/set/autoRefresh true");*/
-   
-   UImanager->ApplyCommand("/vis/open OGL");
-   UImanager->ApplyCommand("/vis/viewer/set/viewpointVector 1 1 1");
-   UImanager->ApplyCommand("/vis/drawVolume");
-   UImanager->ApplyCommand("/vis/viewer/update");
-   UImanager->ApplyCommand("/vis/viewer/set/autoRefresh true");
-   UImanager->ApplyCommand("/vis/scene/add/trajectories smooth");
-   UImanager->ApplyCommand("/vis/scene/endOfEventAction accumulate");
-   
-   ui->SessionStart();
+	runManager->Initialize();
 	
-   return 0;
-
+	G4UIExecutive *ui = 0;
+	
+	if(argc == 1)
+	{
+		ui = new G4UIExecutive(argc, argv);
+	}
+	
+	G4VisManager *visManager = new G4VisExecutive();
+	visManager->Initialize();
+	
+	G4UImanager *UImanager = G4UImanager::GetUIpointer();
+	
+	if(ui)
+	{
+		UImanager->ApplyCommand("/control/execute vis.mac");//Esta linea de codigo llama al documento vis.mac para ejecutar los comandos que este tenga escritos
+		ui->SessionStart();
+	}
+	else
+	{
+		G4String command = "/control/execute ";
+		G4String fileName = argv[1];
+		UImanager->ApplyCommand(command+fileName);
+		
+	}
+	return 0;
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
