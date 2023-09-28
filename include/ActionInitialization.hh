@@ -4,20 +4,17 @@
 #include "G4VUserActionInitialization.hh"
 
 #include "PrimaryGeneratorAction.hh"
+#include "Run.hh"
 
 class DetectorConstruction;
 
-/// Action initialization class.
-///
-
-class ActionInitialization : public G4VUserActionInitialization
+class ActionInitialization: public G4VUserActionInitialization
 {
-  public:
-    ActionInitialization();
-    virtual ~ActionInitialization();
-
-    //virtual void BuildForMaster() const;
-    virtual void Build() const;
+public:
+	ActionInitialization();
+	~ActionInitialization();
+	
+	virtual void Build() const;
 };
 
 #endif
